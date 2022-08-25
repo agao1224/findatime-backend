@@ -6,7 +6,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const { check, body, param, validationResult } = require("express-validator");
 
 const { postEvent, getEventURI, updateEventURI } = require("../controllers/event-controller.js");
-const { validateDays, validateAvailabilityObj } = require("../middlewares/event-validator.js");
+const { validateDays, validateTimesArray } = require("../middlewares/event-validator.js");
 
 const eventRouter = express.Router();
 
@@ -75,9 +75,9 @@ eventRouter.get("/:eventURI",
  */
 eventRouter.put("/:eventURI",
   check("username").exists().isAlphanumeric(),
-  check("availability").exists().isArray(),
-  body("availability").custom(availObj => 
-    validateAvailabilityObj(availObj)),
+  check("times").exists().isArray(),
+  body("times").custom(times => 
+    validateTimesArray(times)),
   async (req, res, next) => {
     const errors = validationResult(req);
     const hasErrors = !errors.isEmpty();

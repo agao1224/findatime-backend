@@ -57,32 +57,24 @@ const validateTimeRange = (timeRange) => {
 
 /**
  * @brief Given array, verify that it is well-formatted a
- *        availabilityObj object (refer to schema/Event.js)
+ *        array of timeRange objects (refer to schema/Event.js)
  * 
- * @param availabilityObj JSON to verify 
+ * @param timeRangeArray Array of timeRanges to validate
  * @return boolean - true iff well-formatted
  * 
- * @require availabilityObj != null
+ * @require timeRangeArray != null
  * @ensure returns true iff well-formatted, raises error
  *         otherwise
  */
-const validateAvailabilityObj = (availObj) => {
-  // First-layer check
-  if (availObj["username"] == null || availObj["times"] == null) {
-    console.log("Missing userID or times field in availability object.");
-    throw new Error("Incorrect availability formatting.");
-  }
-
-  // Second-layer check, first two properties exist
-  const timesArray = availObj["times"];
+const validateTimesArray = (timeRangeArray) => {
+  const timesArray = timeRangeArray;
   for (let i = 0; i < timesArray.length; i++) {
     // Check formatting for each timeRange
     if (validateTimeRange(timesArray[i])) {
       continue;
     }
   }
-
   return true;
 }
 
-module.exports = { validateDays, validateAvailabilityObj }
+module.exports = { validateDays, validateTimesArray }

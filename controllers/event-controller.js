@@ -3,6 +3,7 @@
  */
 const { createEventService } = require("../services/create-event-service.js");
 const { getEventURIService } = require("../services/uri-event-service.js");
+const { updateEventService } = require("../services/update-event-service.js");
 
 /**
  * @brief Wrapper which calls POST /event to
@@ -65,7 +66,7 @@ const getEventURI = async (res, uri, next) => {
  */
 const updateEventURI = async (req, res, next) => {
   try {
-    await updateEventService(req.body);
+    await updateEventService(req.body, req.params.eventURI);
     await res.sendStatus(200);
     next();
   } catch (e) {
