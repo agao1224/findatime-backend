@@ -2,7 +2,7 @@
  * @Imports
  */
 const express = require("express");
-const { check, validationResult } = require("express-validator");
+const { check, body, validationResult } = require("express-validator");
 
 const { postEvent } = require("../controllers/event-controller.js");
 const { validateDays } = require("../middlewares/event-validator.js");

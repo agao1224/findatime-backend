@@ -1,5 +1,8 @@
 const express = require("express");
+const bodyParser = require("body-parser");
+
 const connectDB = require("./config/db.js");
+
 const { eventRouter } = require("./routes/event-routes.js");
 
 connectDB();
