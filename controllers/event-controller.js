@@ -17,8 +17,8 @@ const { createEventService } = require("../services/create-event-service.js");
  */
 const postEvent = async (req, res, next) => {
   try {  
-    await createEventService(req.body);
-    res.sendStatus(201);
+    const eventURL = await createEventService(req.body);
+    res.status(201).json({ url: eventURL });
     next();
   } catch (e) {
     console.log(e.message);

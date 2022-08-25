@@ -14,3 +14,5 @@ const eventSchema = new mongoose.Schema({
   startTime: reqDate,
   endTime: reqDate, 
 });
+
+module.exports = mongoose.model("Event", eventSchema);

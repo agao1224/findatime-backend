@@ -1,10 +1,18 @@
 const express = require("express");
-const app = express();
-const port = 3000
+const connectDB = require("./config/db.js");
+const { eventRouter } = require("./routes/event-routes.js");
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+connectDB();
+
+const app = express();
+const port = process.env.PORT;
+
+// Use bodyparser to parse POST requests
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Routes for /event
+app.use("/events", eventRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
