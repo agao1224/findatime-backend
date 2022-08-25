@@ -1,0 +1,19 @@
+{
+  "name": "findatime",
+  "version": "1.0.0",
+  "description": "A better when2meet",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agao2cmu/findatime.git"
+  },
+  "author": "Andrew Gao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agao2cmu/findatime/issues"
+  },
+  "homepage": "https://github.com/agao2cmu/findatime#readme"
+}
