@@ -20,7 +20,9 @@ const createEventDoc = async (body) => {
   const newEventDoc = new Event({
     days: body.days,
     startTime: body.startTime,
-    endTime: body.endTime 
+    endTime: body.endTime,
+    users: [],
+    availableTimes: []
   });
   return newEventDoc;
 }
@@ -42,13 +44,14 @@ const createEventService = async (body) => {
     const eventDoc = await createEventDoc(body);
     
     await eventDoc.save((err, savedEventDoc) => {
-      if (!err) {
+      if (!err && eventDoc === savedEventDoc) {
         console.log("Success. Event document saved.");
-        return savedEventDoc._id;
       } else {
         throw new Error("ERROR: Unable to save event document.");
       }
     });
+
+    return eventDoc._id.toString();
   } catch (e) {
     console.log(e.message);
   }

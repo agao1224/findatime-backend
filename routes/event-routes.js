@@ -2,10 +2,11 @@
  * @Imports
  */
 const express = require("express");
-const { check, body, validationResult } = require("express-validator");
+const ObjectId = require('mongoose').Types.ObjectId;
+const { check, body, param, validationResult } = require("express-validator");
 
-const { postEvent } = require("../controllers/event-controller.js");
-const { validateDays } = require("../middlewares/event-validator.js");
+const { postEvent, getEventURI, updateEventURI } = require("../controllers/event-controller.js");
+const { validateDays, validateAvailabilityObj } = require("../middlewares/event-validator.js");
 
 const eventRouter = express.Router();
 
@@ -17,8 +18,8 @@ const eventRouter = express.Router();
  */
 eventRouter.post("/",
   check("days").exists().isArray(),
-  check("startTime").exists().isDate(),
-  check("endTime").exists().isDate(),
+  check("startTime").exists().isISO8601(),
+  check("endTime").exists().isISO8601(),
   body("days").custom(dayArray => validateDays(dayArray)),
   body("startTime").custom((startTime, { req }) => {
     if (req.body.endTime < startTime) {
@@ -30,6 +31,7 @@ eventRouter.post("/",
     const errors = validationResult(req);
     const hasErrors = !errors.isEmpty();
     if (hasErrors) {
+      console.log(errors);
       res.sendStatus(500);
     } else {
       await postEvent(req, res, next);
@@ -37,5 +39,57 @@ eventRouter.post("/",
     next();
   }
 );
+
+/**
+ * @Route GET /event/[event URI]
+ * 
+ * @brief Fetches information regarding a 
+ *        specific event
+ */
+eventRouter.get("/:eventURI",
+  param("eventURI").custom(uri => {
+    if (ObjectId.isValid(uri)) {
+      return true;
+    } else {
+      throw new Error("Invalid URI.");
+    }
+  }),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    const hasErrors = !errors.isEmpty();
+    if (hasErrors) {
+      console.log(errors);
+      res.sendStatus(500);
+    } else {
+      await getEventURI(res, req.params.eventURI, next);
+    }
+    next();
+  }
+);
+
+/**
+ * @Route PUT /event/[event URI]
+ * 
+ * @brief Fetches information regarding a 
+ *        specific event
+ */
+eventRouter.put("/:eventURI",
+  check("username").exists().isAlphanumeric(),
+  check("availability").exists().isArray(),
+  body("availability").custom(availObj => 
+    validateAvailabilityObj(availObj)),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    const hasErrors = !errors.isEmpty();
+    if (hasErrors) {
+      console.log(errors);
+      res.sendStatus(500);
+    } else {
+      await updateEventURI(req, res, next);
+    }
+    next();
+  }
+);
+
 
 module.exports = { eventRouter }
