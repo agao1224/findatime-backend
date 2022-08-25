@@ -66,7 +66,10 @@ const getEventURI = async (res, uri, next) => {
  */
 const postLoginEvent = async (req, res, next) => {
   try {
-    await postLoginEventService(req.body, req.params.eventURI);
+    const isReturningUser = await postLoginEventService(req.body, req.params.eventURI);
+    if (isReturningUser) {
+      
+    }
     await res.sendStatus(200);
     next();
   } catch (e) {
