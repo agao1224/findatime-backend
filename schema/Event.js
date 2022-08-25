@@ -15,6 +15,11 @@ const timeRange = {
   end: reqStr 
 }
 
+const user = {
+  username: reqStr,
+  password: reqStr
+}
+
 const availabilityObj = {
   username: reqStr,
   times: [timeRange]
@@ -24,7 +29,7 @@ const eventSchema = new mongoose.Schema({
   days: [reqStr],
   startTime: reqDate,
   endTime: reqDate, 
-  users: [reqStr],
+  users: [user],
   availableTimes: [availabilityObj]
 });
 

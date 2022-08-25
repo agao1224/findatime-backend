@@ -1,6 +1,7 @@
 /**
  * @Imports
  */
+const { getUserType } = require("../middlewares/user-validator.js");
 const Event = require("../schema/Event.js");
 
 
@@ -67,12 +68,40 @@ const addAvailToEvent = async (availObj, uri) => {
  * 
  * @require availObj, uri are both valid and non-null
  */
-const updateEventService = async (availObj, uri) => {
-  try {
+const postLoginEventService = async (body, uri) => {
+  // Validate username, password are correct for
+  // given event object
+  let isNewUser = false;
+  let isInvalidUser = false;
+  let isReturningUser = false;
+  const userType = await getUserType(uri, body.username, body.password)
+
+  switch (userType) {
+    case -1:
+      isInvalidUser = true;
+      break;
+    case 0:
+      isNewUser = true;
+      break;
+    case 1:
+      isReturningUser = true;
+      break;
+    default:
+      console.log("ERROR: An invalid user status code was encountered.");
+      throw new Error("Invalid user status code.");
+  }
+
+  // If new user, return back empty timeRange array
+  // (represents their own)
+  if (isNewUser) {
+
+  }
+  // If returning user, return back old timeRange array
     
-  } catch (e) {
-    console.log(e.message);
+  // If invalid user, throw error
+  if (isInvalidUser) {
+    throw new Error("Invalid credentials.");
   }
 }
 
-module.exports = { updateEventService }
+module.exports = { postLoginEventService }

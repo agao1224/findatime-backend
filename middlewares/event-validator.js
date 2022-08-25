@@ -1,9 +1,4 @@
 /**
- * @Imports
- */
-
-
-/**
  * @brief Given an array of abbreviated days
  *        of the week, validates that they are
  *        all in correct MTW format

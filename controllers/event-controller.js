@@ -3,7 +3,7 @@
  */
 const { createEventService } = require("../services/create-event-service.js");
 const { getEventURIService } = require("../services/uri-event-service.js");
-const { updateEventService } = require("../services/update-event-service.js");
+const { postLoginEventService } = require("../services/post-login-event-service.js");
 
 /**
  * @brief Wrapper which calls POST /event to
@@ -64,9 +64,9 @@ const getEventURI = async (res, uri, next) => {
  * @ensure Success: 200 OK, 
  *         Fail: 500 ERROR.
  */
-const updateEventURI = async (req, res, next) => {
+const postLoginEvent = async (req, res, next) => {
   try {
-    await updateEventService(req.body, req.params.eventURI);
+    await postLoginEventService(req.body, req.params.eventURI);
     await res.sendStatus(200);
     next();
   } catch (e) {
@@ -76,5 +76,5 @@ const updateEventURI = async (req, res, next) => {
 }
  
 module.exports = {
-  postEvent, getEventURI, updateEventURI
+  postEvent, getEventURI, postLoginEvent
 }

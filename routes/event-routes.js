@@ -5,8 +5,8 @@ const express = require("express");
 const ObjectId = require('mongoose').Types.ObjectId;
 const { check, body, param, validationResult } = require("express-validator");
 
-const { postEvent, getEventURI, updateEventURI } = require("../controllers/event-controller.js");
-const { validateDays, validateTimesArray } = require("../middlewares/event-validator.js");
+const { postEvent, getEventURI, postLoginEvent } = require("../controllers/event-controller.js");
+const { validateDays } = require("../middlewares/event-validator.js");
 
 const eventRouter = express.Router();
 
@@ -68,16 +68,14 @@ eventRouter.get("/:eventURI",
 );
 
 /**
- * @Route PUT /event/[event URI]
+ * @Route POST /event/[event URI]/login
  * 
  * @brief Fetches information regarding a 
  *        specific event
  */
-eventRouter.put("/:eventURI",
+eventRouter.post("/:eventURI/login",
   check("username").exists().isAlphanumeric(),
-  check("times").exists().isArray(),
-  body("times").custom(times => 
-    validateTimesArray(times)),
+  check("password").exists().isAlphanumeric(),
   async (req, res, next) => {
     const errors = validationResult(req);
     const hasErrors = !errors.isEmpty();
@@ -85,7 +83,7 @@ eventRouter.put("/:eventURI",
       console.log(errors);
       res.sendStatus(500);
     } else {
-      await updateEventURI(req, res, next);
+      await postLoginEvent(req, res, next);
     }
     next();
   }
