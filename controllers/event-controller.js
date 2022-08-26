@@ -4,6 +4,7 @@
 const { createEventService } = require("../services/create-event-service.js");
 const { getEventURIService } = require("../services/uri-event-service.js");
 const { postLoginEventService } = require("../services/post-login-event-service.js");
+const { createNewUserService } = require("../services/create-new-user-service.js");
 
 /**
  * @brief Wrapper which calls POST /event to
@@ -54,8 +55,8 @@ const getEventURI = async (res, uri, next) => {
 
 /**
  * @brief Wrapper which calls GET /event/[:eventURI].
- *        Returns information in response body for
- *        specified event.
+ *        Logs the user in or creates new "account" for
+ *        them on the specified event 
  * 
  * @param req POST request to /event/[:eventURI]
  * @param res Response to return to client.
@@ -66,9 +67,13 @@ const getEventURI = async (res, uri, next) => {
  */
 const postLoginEvent = async (req, res, next) => {
   try {
+    // Can either be returning user or new user 
     const isReturningUser = await postLoginEventService(req.body, req.params.eventURI);
     if (isReturningUser) {
-      
+      // Return 
+    } else {
+      // User is new
+      await createNewUser
     }
     await res.sendStatus(200);
     next();

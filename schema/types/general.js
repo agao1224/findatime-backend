@@ -8,4 +8,9 @@ const reqStr = {
   required: true
 };
 
-module.exports = { reqInt, reqStr };
+const user = {
+  username: reqStr,
+  password: reqStr
+};
+
+module.exports = { reqInt, reqStr, user };

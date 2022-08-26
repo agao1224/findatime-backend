@@ -2,7 +2,7 @@
  * @Imports
  */
 const mongoose = require("mongoose");
-const { reqStr } = require("./types/general.js");
+const { reqStr, user } = require("./types/general.js");
 
 const reqDate = {
   type: Date,
@@ -13,11 +13,6 @@ const timeRange = {
   day: reqStr,
   start: reqStr,
   end: reqStr 
-}
-
-const user = {
-  username: reqStr,
-  password: reqStr
 }
 
 const availabilityObj = {
