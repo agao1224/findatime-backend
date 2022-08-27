@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const { reqStr, reqInt, user, availabilityObj } = require("./types/general.js");
 
 const eventSchema = new mongoose.Schema({
+  name: reqStr,
   days: [reqStr],
   accessToken: reqStr, 
   startTime: reqInt,

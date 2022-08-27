@@ -17,6 +17,7 @@ const restrictEventRouter = require("./restrict-event-routes.js");
  *        Generates unique URL to new event
  */
 eventRouter.post("/",
+  check("name").exists().isString(),
   check("days").exists().isArray(),
   check("startTime").exists().isNumeric(),
   check("endTime").exists().isNumeric(),

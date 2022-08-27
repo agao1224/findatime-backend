@@ -19,6 +19,7 @@ const Event = require("../schema/Event.js");
  */
 const createEventDoc = async (body) => {
   const newEventDoc = new Event({
+    name: body.name,
     days: body.days,
     accessToken: new mongoose.Types.ObjectId(),
     startTime: body.startTime,
