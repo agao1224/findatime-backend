@@ -2,18 +2,13 @@
  * @Imports
  */
 const mongoose = require("mongoose");
-const { reqStr, user, availabilityObj } = require("./types/general.js");
-
-const reqDate = {
-  type: Date,
-  required: true
-};
+const { reqStr, reqInt, user, availabilityObj } = require("./types/general.js");
 
 const eventSchema = new mongoose.Schema({
   days: [reqStr],
   accessToken: reqStr, 
-  startTime: reqDate,
-  endTime: reqDate, 
+  startTime: reqInt,
+  endTime: reqInt, 
   users: [user],
   availableTimes: [availabilityObj]
 });

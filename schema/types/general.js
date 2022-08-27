@@ -15,8 +15,8 @@ const user = {
 
 const timeRange = {
   day: reqStr,
-  start: reqStr,
-  end: reqStr 
+  start: reqInt,
+  end: reqInt 
 };
 
 const availabilityObj = {

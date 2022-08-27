@@ -18,8 +18,8 @@ const restrictEventRouter = require("./restrict-event-routes.js");
  */
 eventRouter.post("/",
   check("days").exists().isArray(),
-  check("startTime").exists().isISO8601(),
-  check("endTime").exists().isISO8601(),
+  check("startTime").exists().isNumeric(),
+  check("endTime").exists().isNumeric(),
   body("days").custom(dayArray => validateDays(dayArray)),
   body("startTime").custom((startTime, { req }) => {
     if (req.body.endTime < startTime) {

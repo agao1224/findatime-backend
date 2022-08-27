@@ -46,10 +46,9 @@ const createEventService = async (body) => {
     const eventDoc = await createEventDoc(body);
     
     await eventDoc.save((err, savedEventDoc) => {
-      if (!err && eventDoc === savedEventDoc) {
-        console.log("Success. Event document saved.");
-      } else {
-        throw new Error("ERROR: Unable to save event document.");
+      if (err || eventDoc !== savedEventDoc) {
+        throw new Error("ERROR: Unable to save event document or saved",
+                        "document does not match original.");
       }
     });
 
