@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const connectDB = require("./config/db.js");
 
 const { eventRouter } = require("./routes/event-routes.js");
+const { loginRouter } = require("./routes/login-routes.js");
 
 connectDB();
 
@@ -16,6 +17,9 @@ app.use(bodyParser.json());
 
 // Routes for /event
 app.use("/events", eventRouter);
+
+// Routes for /login
+app.use("/login", loginRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

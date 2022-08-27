@@ -2,14 +2,13 @@
  * @Imports
  */
 const express = require("express");
-const ObjectId = require("mongoose").Types.ObjectId;
-const { check, body, param, validationResult } = require("express-validator");
+const { check, body, validationResult } = require("express-validator");
 
-const { postEvent, getEventURI, postLoginEvent } = require("../controllers/event-controller.js");
+const { postEvent } = require("../controllers/event-controller.js");
 const { validateDays } = require("../middlewares/event-validator.js");
-const { accessTokenValidator } = require("../middlewares/access-token-validator.js");
 
 const eventRouter = express.Router();
+const restrictEventRouter = require("./restrict-event-routes.js");
 
 /**
  * @Route POST /event
@@ -42,62 +41,10 @@ eventRouter.post("/",
 );
 
 /**
- * @Route GET /event/[event URI]/[access token]
+ * @Route GET, POST /event/[event URI]/[access token]
  * 
- * @brief Fetches information regarding a 
- *        specific event
+ * @brief Restricted router endpoints requiring access token
  */
-eventRouter.get("/:eventURI/:accessToken",
-  param("eventURI").custom(uri => {
-    if (ObjectId.isValid(uri)) {
-      return true;
-    } else {
-      throw new Error("Invalid event or access token.");
-    }
-  }),
-  param("accessToken").custom(async (accessToken, { req }) => {
-    const isValidToken = 
-      await accessTokenValidator(req.params.eventURI, accessToken);
-    if (isValidToken) {
-      return true;
-    } else {
-      throw new Error("Invalid event or access token.");
-    }
-  }),
-  async (req, res, next) => {
-    const errors = validationResult(req);
-    const hasErrors = !errors.isEmpty();
-    if (hasErrors) {
-      console.log(errors);
-      // Forbidden, user does not have valid credentials
-      res.sendStatus(403); 
-    } else {
-      await getEventURI(res, req.params.eventURI, next);
-    }
-    next();
-  }
-);
-
-/**
- * @Route POST /event/[event URI]/login
- * 
- * @brief Fetches information regarding a 
- *        specific event
- */
-eventRouter.post("/:eventURI/login",
-  check("username").exists().isAlphanumeric(),
-  check("password").exists().isAlphanumeric(),
-  async (req, res, next) => {
-    const errors = validationResult(req);
-    const hasErrors = !errors.isEmpty();
-    if (hasErrors) {
-      console.log(errors);
-      res.sendStatus(500);
-    } else {
-      await postLoginEvent(req, res, next);
-    }
-    next();
-  }
-);
+eventRouter.use("/:eventURI", restrictEventRouter);
 
 module.exports = { eventRouter }
