@@ -58,8 +58,8 @@ restrictEventRouter.post("/",
     return await accessTokenValidator(req.params.eventURI, accessToken);
   }),
   check("availabilityObj").exists(),
-  check("availabilityObj").custom(async (availObj) => {
-    return await availValidator(availObj);
+  check("availabilityObj").custom(async (availObj, { req }) => {
+    return await availValidator(req.params.eventURI, availObj);
   }),  
   async (req, res, next) => {
     const errors = validationResult(req);
