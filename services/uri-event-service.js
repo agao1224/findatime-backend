@@ -19,7 +19,7 @@ const findEvent = async (uri) => {
     const event = await Event.findById(uri);
     return event;
   } catch (e) {
-    throw new Error("Failed to query database for specified event.");
+    throw new Error("ERROR: Failed to query database for specified event.");
   }
 }
 

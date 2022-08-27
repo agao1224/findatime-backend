@@ -13,4 +13,15 @@ const user = {
   password: reqStr
 };
 
-module.exports = { reqInt, reqStr, user };
+const timeRange = {
+  day: reqStr,
+  start: reqStr,
+  end: reqStr 
+};
+
+const availabilityObj = {
+  username: reqStr,
+  times: [timeRange]
+};
+
+module.exports = { reqInt, reqStr, user, availabilityObj };
