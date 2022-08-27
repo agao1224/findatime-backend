@@ -5,6 +5,7 @@ const { createEventService } = require("../services/create-event-service.js");
 const { getEventURIService } = require("../services/uri-event-service.js");
 const { postLoginEventService } = require("../services/post-login-event-service.js");
 const { createNewUserService } = require("../services/create-new-user-service.js");
+const { getEventAccessToken } = require("../services/get-access-token-service.js");
 
 /**
  * @brief Wrapper which calls POST /event to
@@ -68,14 +69,20 @@ const getEventURI = async (res, uri, next) => {
 const postLoginEvent = async (req, res, next) => {
   try {
     // Can either be returning user or new user 
+    const accessTokenJSON = { accessToken: null }
     const isReturningUser = await postLoginEventService(req.body, req.params.eventURI);
+    let eventAccessToken = null;
     if (isReturningUser) {
-      // Return 
+      // Just return access token 
+      eventAccessToken = getEventAccessToken(req.params.eventURI);
     } else {
-      // User is new
-      await createNewUser
+      // User is new, create new entry for event URI
+      // and return access token 
+      eventAccessToken = 
+        await createNewUserService(req.params.eventURI, req.body);
     }
-    await res.sendStatus(200);
+    accessTokenJSON["accessToken"] = eventAccessToken;
+    await res.json(accessTokenJSON);
     next();
   } catch (e) {
     console.log(e.message);

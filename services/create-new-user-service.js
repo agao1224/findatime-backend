@@ -3,6 +3,7 @@
  */
 const User = require("../schema/User.js");
 const Event = require("../schema/Event.js");
+const { getEventAccessToken } = require("./get-access-token-service");
 
 /**
  * @brief Creates a new user document given
@@ -57,7 +58,7 @@ const writeNewUserDoc = async (userDoc, uri) => {
  * 
  * @param uri Specifies event document
  * @param body Request body
- * @return JWT for session management
+ * @return Login token for current session
  * 
  * @require uri, body != null, and body specifies
  *          new user object to write to event
@@ -68,8 +69,8 @@ const createNewUserService = async (uri, body) => {
   try {
     const newUserDoc = await createNewUserDoc(body.username, body.password);
     await writeNewUserDoc(newUserDoc, uri);
-    const newJWT = null;
-    return newJWT;
+    const eventAccessToken = await getEventAccessToken(uri);
+    return eventAccessToken;
   } catch (e) {
     console.log(e.message);
   }

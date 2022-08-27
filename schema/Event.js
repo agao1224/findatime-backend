@@ -22,6 +22,7 @@ const availabilityObj = {
 
 const eventSchema = new mongoose.Schema({
   days: [reqStr],
+  accessToken: reqStr, 
   startTime: reqDate,
   endTime: reqDate, 
   users: [user],
