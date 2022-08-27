@@ -42,12 +42,14 @@ const writeNewUserDoc = async (userDoc, uri) => {
     const eventQuery = { _id: uri };
     const appendOperation = { $push: { users: userDoc }};
 
-    await Event.updateOne({
+    await Event.findOneAndUpdate(
       eventQuery,
-      appendOperation, 
-      done 
-    });
+      appendOperation,
+      { new: true }
+    );
+    
   } catch (e) {
+    console.log(e.message);
     throw new Error("ERROR: Could not register to specified event.");
   }
 }

@@ -31,7 +31,7 @@ const postEvent = async (req, res, next) => {
 }
 
 /**
- * @brief Wrapper which calls GET /event/[:eventURI].
+ * @brief Wrapper which calls GET /event/[eventURI]/[accessToken].
  *        Returns information in response body for
  *        specified event.
  * 

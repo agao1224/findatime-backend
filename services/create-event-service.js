@@ -1,6 +1,7 @@
 /**
  * @Imports
  */
+const mongoose = require("mongoose");
 const Event = require("../schema/Event.js");
 
 
@@ -19,6 +20,7 @@ const Event = require("../schema/Event.js");
 const createEventDoc = async (body) => {
   const newEventDoc = new Event({
     days: body.days,
+    accessToken: new mongoose.Types.ObjectId(),
     startTime: body.startTime,
     endTime: body.endTime,
     users: [],

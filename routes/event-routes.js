@@ -2,11 +2,12 @@
  * @Imports
  */
 const express = require("express");
-const ObjectId = require('mongoose').Types.ObjectId;
+const ObjectId = require("mongoose").Types.ObjectId;
 const { check, body, param, validationResult } = require("express-validator");
 
 const { postEvent, getEventURI, postLoginEvent } = require("../controllers/event-controller.js");
 const { validateDays } = require("../middlewares/event-validator.js");
+const { accessTokenValidator } = require("../middlewares/access-token-validator.js");
 
 const eventRouter = express.Router();
 
@@ -41,17 +42,26 @@ eventRouter.post("/",
 );
 
 /**
- * @Route GET /event/[event URI]
+ * @Route GET /event/[event URI]/[access token]
  * 
  * @brief Fetches information regarding a 
  *        specific event
  */
-eventRouter.get("/:eventURI",
+eventRouter.get("/:eventURI/:accessToken",
   param("eventURI").custom(uri => {
     if (ObjectId.isValid(uri)) {
       return true;
     } else {
-      throw new Error("Invalid URI.");
+      throw new Error("Invalid event or access token.");
+    }
+  }),
+  param("accessToken").custom(async (accessToken, { req }) => {
+    const isValidToken = 
+      await accessTokenValidator(req.params.eventURI, accessToken);
+    if (isValidToken) {
+      return true;
+    } else {
+      throw new Error("Invalid event or access token.");
     }
   }),
   async (req, res, next) => {
@@ -59,7 +69,8 @@ eventRouter.get("/:eventURI",
     const hasErrors = !errors.isEmpty();
     if (hasErrors) {
       console.log(errors);
-      res.sendStatus(500);
+      // Forbidden, user does not have valid credentials
+      res.sendStatus(403); 
     } else {
       await getEventURI(res, req.params.eventURI, next);
     }
@@ -88,6 +99,5 @@ eventRouter.post("/:eventURI/login",
     next();
   }
 );
-
 
 module.exports = { eventRouter }
