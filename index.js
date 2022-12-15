@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const connectDB = require("./config/db.js");
 
@@ -10,6 +11,9 @@ connectDB();
 
 const app = express();
 const port = process.env.PORT;
+
+// Allow CORS from all origins
+app.use(cors())
 
 // Use bodyparser to parse POST requests
 app.use(bodyParser.urlencoded({ extended: true }));

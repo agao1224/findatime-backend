@@ -21,6 +21,7 @@ const { getEventAccessToken } = require("../services/get-access-token-service.js
 const accessTokenHelper = async (uri, clientAccessToken) => {
   try {
     // Query database for event document specified by uri
+    console.log('faggot')
     const eventAccessToken = await getEventAccessToken(uri);
     // Compare event accessToken with client's accessToken
     return (eventAccessToken === clientAccessToken);

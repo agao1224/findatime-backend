@@ -17,6 +17,7 @@ const Event = require("../schema/Event.js");
  */
 const getEventAccessToken = async (uri) => {
   try {
+    console.log('asfa')
     const eventDoc = await Event.findById(uri);
     if (eventDoc == null) {
       throw new Error("Invalid event URI");
