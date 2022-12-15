@@ -26,6 +26,7 @@ restrictEventRouter.get("/:accessToken",
     return await uriValidator(uri);
   }),
   param("accessToken").custom(async (accessToken, { req }) => {
+    console.log('faggot3')
     return await accessTokenValidator(req.params.eventURI, accessToken);
   }),
   async (req, res, next) => {
@@ -55,6 +56,7 @@ restrictEventRouter.post("/",
   }),
   check("accessToken").exists(),
   check("accessToken").custom(async (accessToken, { req }) => {
+    console.log('faggot2')
     return await accessTokenValidator(req.params.eventURI, accessToken);
   }),
   check("availabilityObj").exists(),

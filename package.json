@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/agao2cmu/findatime#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.1",
     "express-validator": "^6.14.2",
     "heroku": "^7.62.0",

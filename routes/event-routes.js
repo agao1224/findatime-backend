@@ -11,7 +11,7 @@ const eventRouter = express.Router();
 const restrictEventRouter = require("./restrict-event-routes.js");
 
 /**
- * @Route POST /event
+ * @Route POST /events
  * 
  * @brief Creates an new event in the database.
  *        Generates unique URL to new event
@@ -42,10 +42,10 @@ eventRouter.post("/",
 );
 
 /**
- * @Route GET, POST /event/[event URI]/[access token]
+ * @Route GET, POST /events/[event URI]/[access token]
  * 
  * @brief Restricted router endpoints requiring access token
  */
-eventRouter.use("/:eventURI", restrictEventRouter);
+eventRouter.use("/id/:eventURI", restrictEventRouter);
 
 module.exports = { eventRouter }
